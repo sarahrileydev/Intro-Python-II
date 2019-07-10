@@ -41,7 +41,7 @@ room['treasure'].s_to = room['narrow']
 # Make a new player object that is currently in the 'outside' room.
 player = Player(room['outside'], "Sarah")
 
-print(player.room.title)
+# print(player.room.title)
 
 # Write a loop that:
 #
@@ -54,3 +54,37 @@ print(player.room.title)
 #
 # If the user enters "q", quit the game.
 
+print("Please choose a room. Enter n, s, e, w, or q to quit.")
+
+while True:
+    print(f'You are in the {player.room.title}. {player.room.description}')
+
+    if player.room.title == "Treasure Chamber":
+        print("You found the treasure!")
+        break
+    player_choice = input("What room do you want to visit? ")
+
+
+    if player_choice == "n":
+        if player.room.n_to:
+            player.room = player.room.n_to
+        else:
+            print("Nothing that way. Choose another direction.")
+    elif player_choice == "s":
+        if player.room.s_to:
+            player.room = player.room.s_to
+        else:
+            print("Nothing that way. Choose another direction.")
+    elif player_choice == "e":
+        if player.room.e_to:
+            player.room = player.room.e_to
+        else:
+            print("Nothing that way. Choose another direction.")
+    elif player_choice == "w":
+        if player.room.w_to:
+            player.room = player.room.w_to
+        else:
+            print("Nothing that way. Choose another direction.")
+    elif player_choice == "q":
+        print("Game over!")
+        break
