@@ -1,5 +1,7 @@
 from room import Room
 from player import Player
+from item import Item
+from item import Food
 
 # Declare all the rooms
 
@@ -38,8 +40,9 @@ room['treasure'].s_to = room['narrow']
 # Main
 #
 
+
 # Make a new player object that is currently in the 'outside' room.
-player = Player(room['outside'], "Sarah")
+
 
 # print(player.room.title)
 
@@ -54,37 +57,74 @@ player = Player(room['outside'], "Sarah")
 #
 # If the user enters "q", quit the game.
 
-print("Please choose a room. Enter n, s, e, w, or q to quit.")
+player = Player("Sarah", room['outside'])
+
+rock = Item("Rock", "This is a rock.")
+pencil = Item("Pencil", "This is a pencil.")
+sandwich = Food("Sandwich", "This is delicious sandwich.", 100)
+
+room['outside'].items.append(rock)
+player.items.append(pencil)
+player.items.append(sandwich)
+
+
+current_room = player.current_room
+
+print(current_room)
+
+valid_directions = ["n", "s", "e", "w"]
 
 while True:
-    print(f'You are in the {player.room.title}. {player.room.description}')
+    # Wait for user input
+    cmd = input("-> ")
+    # Parse user inputs (n, s, e, w, q)
+    if cmd in valid_directions:
+        # If input is valid, move the player and loop
+        player.travel(cmd)
+    elif cmd == "i":
+        player.print_inventory()
+    elif cmd == "q":
+        print("Goodbye!")
+        exit()
+    elif cmd == "eat":
+        player.eat("sandwich")
+    elif cmd == "eat pencil":
+        player.eat("pencil")
+    else:
+        print("I did not recognize that command")
 
-    if player.room.title == "Treasure Chamber":
-        print("You found the treasure!")
-        break
-    player_choice = input("What room do you want to visit? ")
+
+# print("Please choose a room. Enter n, s, e, w, or q to quit.")
+
+# while True:
+#     print(f'You are in the {player.room.title}. {player.room.description}')
+
+#     if player.room.title == "Treasure Chamber":
+#         print("You found the treasure!")
+#         break
+#     player_choice = input("What room do you want to visit? ")
 
 
-    if player_choice == "n":
-        if player.room.n_to:
-            player.room = player.room.n_to
-        else:
-            print("Nothing that way. Choose another direction.")
-    elif player_choice == "s":
-        if player.room.s_to:
-            player.room = player.room.s_to
-        else:
-            print("Nothing that way. Choose another direction.")
-    elif player_choice == "e":
-        if player.room.e_to:
-            player.room = player.room.e_to
-        else:
-            print("Nothing that way. Choose another direction.")
-    elif player_choice == "w":
-        if player.room.w_to:
-            player.room = player.room.w_to
-        else:
-            print("Nothing that way. Choose another direction.")
-    elif player_choice == "q":
-        print("Game over!")
-        break
+#     if player_choice == "n":
+#         if player.room.n_to:
+#             player.room = player.room.n_to
+#         else:
+#             print("Nothing that way. Choose another direction.")
+#     elif player_choice == "s":
+#         if player.room.s_to:
+#             player.room = player.room.s_to
+#         else:
+#             print("Nothing that way. Choose another direction.")
+#     elif player_choice == "e":
+#         if player.room.e_to:
+#             player.room = player.room.e_to
+#         else:
+#             print("Nothing that way. Choose another direction.")
+#     elif player_choice == "w":
+#         if player.room.w_to:
+#             player.room = player.room.w_to
+#         else:
+#             print("Nothing that way. Choose another direction.")
+#     elif player_choice == "q":
+#         print("Game over!")
+#         break
