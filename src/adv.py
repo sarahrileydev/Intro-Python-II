@@ -1,7 +1,7 @@
 from room import Room
 from player import Player
 from item import Item
-from item import Food
+
 
 # Declare all the rooms
 
@@ -59,13 +59,13 @@ room['treasure'].s_to = room['narrow']
 
 player = Player("Sarah", room['outside'])
 
-rock = Item("Rock", "This is a rock.")
-pencil = Item("Pencil", "This is a pencil.")
-sandwich = Food("Sandwich", "This is delicious sandwich.", 100)
+rock = Item("Rock")
+pencil = Item("Pencil")
+
 
 room['outside'].items.append(rock)
 player.items.append(pencil)
-player.items.append(sandwich)
+
 
 
 current_room = player.current_room
@@ -74,9 +74,11 @@ print(current_room)
 
 valid_directions = ["n", "s", "e", "w"]
 
+
 while True:
     # Wait for user input
     cmd = input("-> ")
+    wordList = cmd.split(' ')
     # Parse user inputs (n, s, e, w, q)
     if cmd in valid_directions:
         # If input is valid, move the player and loop
@@ -86,10 +88,23 @@ while True:
     elif cmd == "q":
         print("Goodbye!")
         exit()
-    elif cmd == "eat":
-        player.eat("sandwich")
-    elif cmd == "eat pencil":
-        player.eat("pencil")
+    elif wordList[0] == "get":
+        if len(current_room.items):
+            for item in current_room.items:
+                if item.name.lower() == wordList[1].lower():
+                    player.pickup_item(item)
+                    current_room.items.remove(item)
+                else:
+                    print(f"We don't have any {wordList[1]}") 
+    elif wordList[0] == "drop":
+        if len(player.items):
+            for item in player.items:
+                if item.name.lower() == wordList[1].lower():
+                    player.drop_item(item)
+                    current_room.items.append(item)
+                    print(f"You have dropped {item.name}")
+                else:
+                    print(f"We don't have any {wordList[1]}")   
     else:
         print("I did not recognize that command")
 
